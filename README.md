@@ -10,6 +10,22 @@ This Markdown library:
 
 Vischio is a "port" of Python's [Mistletoe](https://github.com/miyuchina/mistletoe) library with bits of the the "oldish" C++/Boost [sevenjay/cpp-markdown](https://github.com/sevenjay/cpp-markdown)
 
+## Sequence diagram
+
+![sequence diagram: document](uml/uml-sequence-document.svg)
+
+<details><summary>Source</summary>
+```
+Document->TokenizerFile: get lines
+TokenizerFile-->Document: lines
+Document->TokenizerFile: normalize lines
+TokenizerFile-->Document: lines
+Document->TokenizerBlock: get tokens
+TokenizerBlock-->Document: tokens 
+```
+</details>
+
+
 ## Status
 
 This project is still in its starting blocks and is not usable.
@@ -18,6 +34,7 @@ Currently :
 
 - the p and h token get all the way from the parser to the renderer...
 - next step is to get the span items to be processed (em).
+  - the structure for the inline tokens is created... the heading starts collecting children: the code compiles but the inline children are not processed yet.
 - it only processes a "input.md" file that must be placed next to the executable.
 
 ## Notes
@@ -39,6 +56,15 @@ Some input:
 ## Todo
 
 - Unit tests?
+- UML?
+  - dia + autodia
+  - doxygen?
+    - https://codeyarns.com/2014/06/18/how-to-configure-doxygen-for-c-code/
+    - https://stackoverflow.com/questions/4755913/how-to-use-doxygen-to-create-uml-class-diagrams-from-c-source
+  - what about creating a c++ to dia based on clang?
+    - based on http://cpp2dia.sourceforge.net/ ? but i would need cvs to get the code...
+  - bouml? (but it does not seem to be free software)
+  - https://github.com/ruben2020/tags2uml
 - We might want to make `Document` non copyable:
 
   ```cpp
