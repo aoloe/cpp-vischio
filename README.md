@@ -8,7 +8,7 @@ This Markdown library:
 - Can produce other things than HTML,
 - Can process custom formatting.
 
-Vischio is a "port" of Python's [Mistletoe](https://github.com/miyuchina/mistletoe) library with bits of the the "oldish" C++/Boost [sevenjay/cpp-markdown](https://github.com/sevenjay/cpp-markdown)
+Vischio is a "port" of Python's [Mistletoe](https://github.com/miyuchina/mistletoe) library with bits (or better some inspiration) from the "oldish" C++/Boost [sevenjay/cpp-markdown](https://github.com/sevenjay/cpp-markdown)
 
 ## Sequence diagram
 
@@ -26,6 +26,23 @@ TokenizerBlock-->Document: tokens
 ```
 
 </details>
+
+![sequence diagram: document](uml/uml-sequence-tokenizer-block.svg)
+
+<details><summary>Source</summary>
+
+```
+Document->TokenizerBlock: get tokens (lines)
+Note over TokenizerBlock: For each line
+TokenizerBlock->TokenBlock: factory()
+TokenBlock-->TokenizerBlock:false or Specialized Token
+TokenizerBlock->Specialized Token: tokenize
+Note over TokenizerBlock: put Specialized token in tokens
+TokenizerBlock-->Document: tokens
+```
+
+</details>
+
 
 
 ## Status
@@ -67,6 +84,9 @@ Some input:
     - based on http://cpp2dia.sourceforge.net/ ? but i would need cvs to get the code...
   - bouml? (but it does not seem to be free software)
   - https://github.com/ruben2020/tags2uml
+  - sequence diagrams?
+    - https://bramp.github.io/js-sequence-diagrams/
+    - <https://en.wikipedia.org/wiki/Sequence_diagram>
 - We might want to make `Document` non copyable:
 
   ```cpp
