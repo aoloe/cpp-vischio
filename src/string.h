@@ -2,6 +2,7 @@
 #define VISCHIO_STRING_H
 
 #include <string>
+#include <sstream>
 
 namespace Vischio {
 namespace String {

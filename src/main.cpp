@@ -4,6 +4,7 @@
 #include "vischio.h"
 #include "document.h"
 #include "blocktoken.h"
+#include "inlinetoken.h"
 #include "htmlrenderer.h"
 
 

@@ -30,9 +30,10 @@ namespace File {
     std::vector<std::string> getNormalized(std::vector<std::string> lines)
     {
         std::vector<std::string> result{};
+        // add an empty line after <code>
         std::string codeFence = "";
         for (auto line: lines) {
-            if ((line.find("````") == 0) || (line.find("~~~~") == 0)) {
+            if ((line.find("```") == 0) || (line.find("~~~") == 0)) {
                 if (codeFence == "") {
                     result.push_back("\n");
                     codeFence = line.substr(0, 3);
@@ -40,6 +41,7 @@ namespace File {
                     codeFence = "";
                 }
             }
+            // replace tabs by four spaces
             line = std::regex_replace(line, std::regex(R"(\t)"), "    ");
             result.push_back(line);
         }

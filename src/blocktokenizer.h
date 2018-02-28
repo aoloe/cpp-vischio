@@ -11,6 +11,8 @@
 
 namespace Vischio {
 namespace Tokenizer {
+    using Lines = std::vector<std::string>;
+
     class Block
     {
         public:
@@ -31,12 +33,13 @@ namespace Tokenizer {
                 tokenizers.emplace_back(std::make_shared<Token::Paragraph>());
             }
 
-            std::vector<std::shared_ptr<Token::Block>> getTokens(std::vector<std::string> lines)
+            Token::Blocks getTokens(Lines lines)
             {
-                std::vector<std::shared_ptr<Token::Block>> result{};
+                Token::Blocks result{};
                 for(auto it = lines.begin(); it != lines.end(); ++it) {
                     for (const auto& tokenizer: tokenizers) {
                         if (auto token = tokenizer->factory(it)) {
+                            (*token)->tokenize(inlineTokenizer);
                             result.push_back(*token);
                             break;
                         }
@@ -45,7 +48,8 @@ namespace Tokenizer {
                 return result;
             }
 
-            std::vector<std::shared_ptr<Token::Block>> tokenizers{};
+            Token::Blocks tokenizers{};
+            Inline inlineTokenizer{};
     };
 }
 }

@@ -8,26 +8,30 @@
 #include <optional>
 #include <algorithm>
 
-
-/**
- *
- * Base class for span-level tokens. Recursively parse inner tokens.
- * 
- * Naming conventions:
- *
- * - lines denotes a list of (possibly unparsed) input lines, and is
- *   commonly used as the argument name for constructors.
- * - self.children is a tuple with all the inner tokens (thus if a
- *   token has children attribute, it is not a leaf node; if a token
- *   calls span_token.tokenize_inner, it is the boundary between
- *   span-level tokens and block-level tokens);
- * - match is a static method used by tokenize to check if line_buffer
- *   matches the current token. Every subclass of BlockToken must
- *   define a match function (see block_tokenizer.tokenize).
-*/
+#include "inlinetokenizer.h"
+#include "inlinetoken.h"
 
 namespace Vischio {
 namespace Token {
+    class Block;
+    using Blocks = std::vector<std::shared_ptr<Block>>;
+
+    /**
+     *
+     * Base class for span-level tokens. Recursively parse inner tokens.
+     * 
+     * Naming conventions:
+     *
+     * - lines denotes a list of (possibly unparsed) input lines, and is
+     *   commonly used as the argument name for constructors.
+     * - self.children is a tuple with all the inner tokens (thus if a
+     *   token has children attribute, it is not a leaf node; if a token
+     *   calls span_token.tokenize_inner, it is the boundary between
+     *   span-level tokens and block-level tokens);
+     * - match is a static method used by tokenize to check if line_buffer
+     *   matches the current token. Every subclass of BlockToken must
+     *   define a match function (see block_tokenizer.tokenize).
+    */
     class Block
     {
         public:
@@ -39,17 +43,16 @@ namespace Token {
             std::vector<std::string> read() {
                 return {};
             }
+            virtual void tokenize(const Tokenizer::Inline& tokenizer)
+            {
+                children = tokenizer.getTokens(getText());
+            }
             virtual std::string getType() const {return type;}
+            virtual std::vector<std::string> getText() const = 0;
+            Inlines getChildren() { return children; }
         protected:
-            /**
-             * Actual children attribute.
-             *
-             * If self.children is never accessed, the generator is never actually
-             * run. This allows for lazy-parsing of the input, while still maintaining
-             * idempotent behavior for tokens.
-             */
             std::vector<std::string>::iterator it;
-            std::vector<std::shared_ptr<Block>> children{};
+            Inlines children{};
             std::string type{"Block"}; // TODO: can a variable be virtual?
     };
 
@@ -70,6 +73,7 @@ namespace Token {
             }
 
             auto getLines() { return data; }
+            std::vector<std::string> getText() const override { return data; }
 
         private:
             std::vector<std::string> data;
@@ -85,25 +89,29 @@ namespace Token {
             };
             
             Heading() : Block("Heading") {};
+            // Heading(int level, std::string title) : Block("Heading"), data{level, title} {}
             Heading(int level, std::string title) : Block("Heading"), data{level, title} {}
             Heading(HeadingData data) : Block("Heading"), data{data} {}
+
             std::optional<std::shared_ptr<Block>> factory(std::vector<std::string>::iterator it) const override
             {
                 if (auto heading = getLevelAndTitle(*it)) {
+                    // return {std::make_shared<Heading>((*heading).level, (*heading).title)};
                     return {std::make_shared<Heading>((*heading).level, (*heading).title)};
                 }
                 return {};
             }
+
             int getLevel() { return data.level; }
-            std::string getTitle() { return data.title; }
+            // std::string getTitle() { return data.title; }
+            std::vector<std::string> getText() const override { return {data.title}; }
 
         private:
             HeadingData data;
 
             /**
-             * starts with a # and the last consecutive # is followed by non-spaces
+             * A heading starts with a # and the last consecutive # is followed by non-spaces
              */
-
             std::optional<HeadingData> getLevelAndTitle(std::string line) const
             {
                 try {

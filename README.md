@@ -72,8 +72,18 @@ Some input:
 - https://stackoverflow.com/questions/11217800/building-library-with-cmake
 - [Factories](https://stackoverflow.com/questions/5120768/how-to-implement-the-factory-method-pattern-in-c-correctly)
 
+Online testing of the Github Markdown:
+
+- http://tmpvar.com/markdown.html
+- or just use atom + ctrl-shift-m
+- liuq proposal for a new logo was not really accepted:
+  - https://github.com/liuq/mistletoe/blob/55b22f802533bc256504d28b64745a521772b926/resources/logo.svg
+  - personally, i like it... without the ribbon, of course.
+
+
 ## Todo
 
+- For the list we will probably need a common ancestor for inline and block elements...
 - Unit tests?
 - UML?
   - dia + autodia
