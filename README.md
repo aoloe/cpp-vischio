@@ -15,6 +15,7 @@ Vischio is a "port" of Python's [Mistletoe](https://github.com/miyuchina/mistlet
 ![sequence diagram: document](uml/uml-sequence-document.svg)
 
 <details><summary>Source</summary>
+
 ```
 Document->TokenizerFile: get lines
 TokenizerFile-->Document: lines
@@ -23,6 +24,7 @@ TokenizerFile-->Document: lines
 Document->TokenizerBlock: get tokens
 TokenizerBlock-->Document: tokens 
 ```
+
 </details>
 
 
