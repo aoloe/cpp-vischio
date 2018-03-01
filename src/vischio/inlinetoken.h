@@ -7,6 +7,7 @@
 
 #include <regex>
 #include <iterator>
+#include <optional>
 
 namespace Vischio {
 namespace Token {

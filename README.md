@@ -71,6 +71,7 @@ Some input:
 - [cmake and libraries](https://stackoverflow.com/questions/17511496/how-to-create-a-shared-library-with-cmake)
 - https://stackoverflow.com/questions/11217800/building-library-with-cmake
 - [Factories](https://stackoverflow.com/questions/5120768/how-to-implement-the-factory-method-pattern-in-c-correctly)
+- [Creating a Header-Only Library with CMake](http://www.mariobadr.com/creating-a-header-only-library-with-cmake.html)
 
 Online testing of the Github Markdown:
 
@@ -85,6 +86,7 @@ Online testing of the Github Markdown:
 
 - For the list we will probably need a common ancestor for inline and block elements...
 - Unit tests?
+  - catch
 - UML?
   - dia + autodia
   - doxygen?

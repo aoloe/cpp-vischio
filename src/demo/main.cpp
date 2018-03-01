@@ -3,10 +3,10 @@
 
 #include "cmdargs.h"
 
-#include "document.h"
-#include "blocktoken.h"
-#include "inlinetoken.h"
-#include "htmlrenderer.h"
+#include "vischio/document.h"
+#include "vischio/blocktoken.h"
+#include "vischio/inlinetoken.h"
+#include "vischio/htmlrenderer.h"
 
 int main(int argc, char **argv)
 {
