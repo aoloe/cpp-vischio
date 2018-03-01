@@ -52,9 +52,13 @@ This project is still in its starting blocks and is not usable.
 Currently :
 
 - the p and h token get all the way from the parser to the renderer...
-- next step is to get the span items to be processed (em).
-  - the structure for the inline tokens is created... the heading starts collecting children: the code compiles but the inline children are not processed yet.
-- it only processes a "input.md" file that must be placed next to the executable.
+- the `<em>` is the first inline block to be processed.
+- use it as `vischio input.md`
+- next steps:
+  - get catch to work and create the unit tests for `<em>`
+  - add other inline items
+  - find out how to get the lists to work (block children in block item)
+  - get he `<br>` to work.
 
 ## Notes
 
