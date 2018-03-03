@@ -15,6 +15,7 @@ namespace Vischio {
 namespace Token {
     class Block;
     using Blocks = std::vector<std::shared_ptr<Block>>;
+    using OptionalBlock = std::optional<std::shared_ptr<Block>>;
 
     /**
      *
@@ -36,10 +37,7 @@ namespace Token {
     {
         public:
             Block(std::string type) : type{type} {}
-            virtual std::optional<std::shared_ptr<Block>> factory(std::vector<std::string>::iterator) const
-            {
-                return {};
-            }
+            static OptionalBlock factory(std::vector<std::string>::iterator) { return {}; }
             std::vector<std::string> read() {
                 return {};
             }
@@ -61,7 +59,7 @@ namespace Token {
         public:
             Paragraph() : Block("Paragraph") {}
             Paragraph(std::vector<std::string> data) : Block("Paragraph"), data{data} {}
-            std::optional<std::shared_ptr<Block>> factory(std::vector<std::string>::iterator it) const override
+            static OptionalBlock factory(std::vector<std::string>::iterator it)
             {
                 if (it->empty() || *it == "\n") {
                     return {};
@@ -93,7 +91,7 @@ namespace Token {
             Heading(int level, std::string title) : Block("Heading"), data{level, title} {}
             Heading(HeadingData data) : Block("Heading"), data{data} {}
 
-            std::optional<std::shared_ptr<Block>> factory(std::vector<std::string>::iterator it) const override
+            static OptionalBlock factory(std::vector<std::string>::iterator it)
             {
                 if (auto heading = getLevelAndTitle(*it)) {
                     // return {std::make_shared<Heading>((*heading).level, (*heading).title)};
@@ -112,7 +110,7 @@ namespace Token {
             /**
              * A heading starts with a # and the last consecutive # is followed by non-spaces
              */
-            std::optional<HeadingData> getLevelAndTitle(std::string line) const
+            static std::optional<HeadingData> getLevelAndTitle(std::string line)
             {
                 try {
                     if (line.at(0) != '#') {

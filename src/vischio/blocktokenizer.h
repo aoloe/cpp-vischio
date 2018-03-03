@@ -6,7 +6,8 @@
 #include <algorithm>
 #include <memory> // make_shared
 #include <utility> // move
-#include <optional> // move
+#include <optional>
+#include <functional>
 #include "blocktoken.h"
 
 namespace Vischio {
@@ -19,7 +20,7 @@ namespace Tokenizer {
             /*
             void add(std::shared_ptr<Token::Block> block)
             {
-                tokenizers.push_back(block);
+                factories.push_back(block);
             }
             // if we want to be able to remove blocks, we have to use a map instead of the vector.
             void remove(std::string blockName)
@@ -27,18 +28,20 @@ namespace Tokenizer {
             }
             */
 
-            Block()
-            {
-                tokenizers.emplace_back(std::make_shared<Token::Heading>());
-                tokenizers.emplace_back(std::make_shared<Token::Paragraph>());
-            }
+            Block() :
+                factories{
+                    // For block factories, the order is relevant
+                    &Token::Heading::factory,
+                    &Token::Paragraph::factory
+                }
+            {}
 
             Token::Blocks getTokens(Lines lines)
             {
                 Token::Blocks result{};
                 for(auto it = lines.begin(); it != lines.end(); ++it) {
-                    for (const auto& tokenizer: tokenizers) {
-                        if (auto token = tokenizer->factory(it)) {
+                    for (auto factory: factories) {
+                        if (auto token = factory(it)) {
                             (*token)->tokenize(inlineTokenizer);
                             result.push_back(*token);
                             break;
@@ -48,7 +51,7 @@ namespace Tokenizer {
                 return result;
             }
 
-            Token::Blocks tokenizers{};
+            std::vector<std::function<Token::OptionalBlock(std::vector<std::string>::iterator)>> factories{};
             Inline inlineTokenizer{};
     };
 }

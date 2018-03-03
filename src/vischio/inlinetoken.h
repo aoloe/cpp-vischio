@@ -13,7 +13,9 @@ namespace Vischio {
 namespace Token {
 
     class Inline;
+    // using Inlines = std::vector<std::shared_ptr<Inline>>;
     using Inlines = std::vector<std::shared_ptr<Inline>>;
+    using OptionalInline = std::optional<std::shared_ptr<Inline>>;
 
     /**
      * we need something to be virtual so that we have
@@ -28,7 +30,7 @@ namespace Token {
             Inline(std::string type, std::string::iterator start, std::string::iterator end) : type{type}, iteratorStartMatch{start}, iteratorEndMatch{end} {}
             ~Inline() {}
 
-            virtual std::optional<std::shared_ptr<Inline>> factory(std::string::iterator start, std::string::iterator end) const = 0;
+            static OptionalInline factory(std::string::iterator start, std::string::iterator end) { return {}; }
 
             std::string::iterator getIteratorStartMatch() { return iteratorStartMatch; }
             std::string::iterator getIteratorEndMatch() { return iteratorEndMatch; }
@@ -58,7 +60,7 @@ namespace Token {
              * RawText does not use the factory.
              * It's what does not match.
              */
-            std::optional<std::shared_ptr<Inline>> factory(std::string::iterator start, std::string::iterator end) const override
+            static OptionalInline factory(std::string::iterator start, std::string::iterator end)
             {
                 return {};
             }
@@ -83,7 +85,7 @@ namespace Token {
             Emphasis() : Inline("Emphasis") {}
             Emphasis(std::string::iterator start, std::string::iterator end) : Inline("Emphasis", start, end) {}
 
-            std::optional<std::shared_ptr<Inline>> factory(std::string::iterator start, std::string::iterator end) const override
+            static OptionalInline factory(std::string::iterator start, std::string::iterator end)
             {
                 std::string text = std::string(start, end);
                 std::smatch match;
@@ -126,7 +128,7 @@ namespace Token {
             LineBreak() : Inline("LineBreak") {}
             LineBreak(std::string data) : Inline("LineBreak"), data{data} {}
 
-            std::optional<std::shared_ptr<Inline>> factory(std::string::iterator start, std::string::iterator end) const override
+            static OptionalInline factory(std::string::iterator start, std::string::iterator end)
             {
                 return {};
             }

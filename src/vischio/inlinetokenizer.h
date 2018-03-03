@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <memory>
+#include <functional>
 
 #include "inlinetoken.h"
 
@@ -12,10 +13,11 @@ namespace Tokenizer {
     class Inline
     {
         public:
-            Inline()
-            {
-                tokenizers.emplace_back(std::make_shared<Token::Emphasis>());
-            }
+            Inline() :
+                factories{
+                    &Token::Emphasis::factory
+                }
+            {}
 
             Token::Inlines getTokens(const std::vector<std::string> lines) const
             {
@@ -24,8 +26,8 @@ namespace Tokenizer {
                     for (auto it = line.begin(); it < line.end();) {
                         auto minIt = line.end();
                         std::shared_ptr<Token::Inline> minToken = nullptr;
-                        for (const auto& tokenizer: tokenizers) {
-                            if (auto token = tokenizer->factory(it, line.end())) {
+                        for (auto factory: factories) {
+                            if (auto token = factory(it, line.end())) {
                                 if ((*token)->getIteratorStartMatch() < minIt) {
                                     minIt = (*token)->getIteratorStartMatch();
                                     minToken = *token;
@@ -53,9 +55,9 @@ namespace Tokenizer {
                 return result;
             }
 
-            Token::Inlines tokenizers{};
-    };
+            std::vector<std::function<Token::OptionalInline(std::string::iterator start, std::string::iterator end)>> factories{};
 
+    };
 
 }
 }
