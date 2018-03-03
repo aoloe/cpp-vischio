@@ -59,6 +59,9 @@ Currently :
   - add other inline items
   - find out how to get the lists to work (block children in block item)
   - get he `<br>` to work.
+- `cmake/FindCatch.cmake` now somehow works, but:
+  - it does not "find" Catch after downloading it (you have to re-download it)
+  - i cannot set noexecpt and std-11 as a minimum without removing the original settings for the project from the `CMakeLists.txt`.
 
 ## Notes
 
