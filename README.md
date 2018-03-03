@@ -91,9 +91,10 @@ Online testing of the Github Markdown:
 
 ## Todo
 
+- make sure that empth does not accept strong elements
+- do not run tests on make but on `cmake test` (and `cmake all`)
+- do not stop making if tests fail
 - For the list we will probably need a common ancestor for inline and block elements...
-- Unit tests?
-  - catch
 - UML?
   - dia + autodia
   - doxygen?
