@@ -1,4 +1,4 @@
-<img src='https://cdn.rawgit.com/aoloe/cpp-vischio/6dc71109/assets/vischio.svg' align='right'>
+<img src="https://cdn.rawgit.com/aoloe/cpp-vischio/6dc71109/assets/vischio.svg" align="right" width="150px">
 
 # Vischio Markdown
 
