@@ -1,3 +1,5 @@
+<img src='https://cdn.rawgit.com/aoloe/cpp-vischio/6dc71109/assets/vischio.svg' align='right'>
+
 # Vischio Markdown
 
 Vischio is a simple, modern, and hackable C++ Markdown library. 
@@ -51,6 +53,7 @@ This project is still in its starting blocks and is not usable.
 
 Currently :
 
+- i'm trying to implement the list block items (with block children). i'm currently trying to get the children to be a variant. i have the structure (i think) but, now i have to correctly take out the items from the vector.
 - the p and h token get all the way from the parser to the renderer...
 - the `<em>` is the first inline block to be processed.
 - use it as `vischio input.md`
@@ -91,10 +94,13 @@ Online testing of the Github Markdown:
 
 ## Todo
 
+- improve the catching of out of range in the htmlrender when it does not find a matching render for the block type (output to standard error?)
+- remove the construrs without paramers (now we have static factories)
 - make sure that empth does not accept strong elements
 - do not run tests on make but on `cmake test` (and `cmake all`)
 - do not stop making if tests fail
 - For the list we will probably need a common ancestor for inline and block elements...
+- At the end, i would like to check if it would be possible to have the tokens as `unique_ptr`s, insteald of `shared_ptr`s.
 - UML?
   - dia + autodia
   - doxygen?
